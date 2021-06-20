@@ -26,12 +26,12 @@ app.post('/inquiry', parsr, (req, res) => {
         "message": req.body.message,
         "subscribeCheck": req.body.subscribeCheck
     })
-    fs.writeFileSync("message1.txt", JSON.stringify(formContent), null, 2)
+    fs.writeFileSync("informations.txt", JSON.stringify(formContent), null, 2)
 })
 
 app.get('/fetchEnquiries', (req, res) => {
     console.log("In the fetch enquiries page")
-    fs.readFile('message1.txt', 'utf8', (err, data) => {
+    fs.readFile('informations.txt', 'utf8', (err, data) => {
         if (err) throw err;
         res.send(data);
     });
