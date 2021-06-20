@@ -1,9 +1,11 @@
-const { render } = require('ejs');
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const fs = require("fs");
+const { check, validationResult } = require('express-validator')
+const fsR = require('fs-reverse');
 const formContent = [];
-const parsr = express.urlencoded({ extended: false })
+
+app.use(express.urlencoded({ extended: true }))
 
 app.set('view engine', 'ejs')
 
@@ -17,7 +19,15 @@ app.get('/inquiry', (req, res) => {
     res.render('form')
 })
 
-app.post('/inquiry', parsr, (req, res) => {
+app.post('/inquiry', [
+    check('inputEmail', 'Invalid Email Provided')
+        .isEmail()
+        .normalizeEmail()
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.send("Invalid Email provided")
+    }
     console.log('In the post inquiry')
     res.render('form')
     formContent.push({
@@ -26,7 +36,9 @@ app.post('/inquiry', parsr, (req, res) => {
         "message": req.body.message,
         "subscribeCheck": req.body.subscribeCheck
     })
-    fs.writeFileSync("informations.txt", JSON.stringify(formContent), null, 2)
+    fs.writeFile("informations.txt", JSON.stringify(formContent), (err, data) => {
+        if (err) throw err;
+    });
 })
 
 app.get('/fetchEnquiries', (req, res) => {
