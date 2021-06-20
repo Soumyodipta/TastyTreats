@@ -1,6 +1,6 @@
 # TastyTreats
 
-Tasty Treats, a local Bakery. An Enquiry Form required by Terence to store details of customers on his server.
+Tasty Treats, a local Bakery. An Enquiry Form required by Terence to store details of all customers on his server.
 
 Common setup
 
